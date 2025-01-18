@@ -4,6 +4,8 @@ use std::path::Path;
 
 use std::collections::{HashMap, HashSet};
 
+use candle_core::Tensor;
+
 pub fn read_file_utf8(path: &Path) -> Result<String, std::io::Error> {
     let mut file = File::open(path)?;
     let mut contents = String::new();
@@ -50,3 +52,5 @@ pub fn encode(s: &str, stoi: &HashMap<char, usize>) -> Vec<usize> {
 pub fn decode(l: &[usize], itos: &HashMap<usize, char>) -> String {
     l.iter().map(|&i| *itos.get(&i).unwrap()).collect()
 }
+
+pub fn get_batch(split: String, train_data: Tensor, val_data: Tensor) {}
