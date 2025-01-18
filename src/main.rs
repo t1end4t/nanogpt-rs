@@ -1,10 +1,6 @@
-use candle_core::{Device, Result, Tensor};
-
-struct Model {
-    first: Tensor,
-    second: Tensor,
-}
+use nanogpt_rs::adder;
 
 fn main() {
-    println!("Hello, world!");
+    let a = adder(10, 20);
+    println!("{a}");
 }
