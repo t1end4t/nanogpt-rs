@@ -6,14 +6,19 @@ use nanogpt_rs::{
     },
 };
 
-use candle_core::{Device::Cpu, IndexOp, Tensor};
+use candle_core::{
+    Device::{self, Cpu},
+    IndexOp, Tensor,
+};
 use std::path::Path;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // TODO: try to set seed first
+    let device = Device::Cpu;
 
-    let a = Tensor::rand(0f32, 10f32, 20, &Cpu)?;
-    // println!("{:?}", a.to_vec1::<f32>());
+    // TODO: try to set seed first but failed
+    // device.set_seed(42)?;
+
+    let a = Tensor::rand(0f32, 10f32, 20, &device)?;
 
     let batch_size = 4;
     let block_size = 8;
