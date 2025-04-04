@@ -1,6 +1,4 @@
 use core::str;
-use rand::{Rng, SeedableRng};
-use rand_pcg::Pcg64;
 use std::{
     char,
     collections::{BTreeSet, HashMap},
@@ -58,11 +56,19 @@ pub fn decode(vec: &Vec<usize>, sample: &str) -> Vec<char> {
     decode_result
 }
 
-// TODO: try to random with seed first
-// pub fn random_with_seed(seed: f32) {
-//     let mut rng = Pcg64::seed_from_u64(42);
-//     println!("Random number: {}", rng.random());
-// }
+/// TODO: we not random string
+pub fn random_string_with_seed(length: usize, seed: u64) -> String {
+    use rand::{Rng, SeedableRng};
+    use rand_pcg::Pcg64;
+
+    let mut rng = Pcg64::seed_from_u64(seed);
+    (0..length)
+        .map(|_| {
+            // Generate a random ASCII character (32-126)
+            rng.random_range(2..127) as u8 as char
+        })
+        .collect()
+}
 
 #[cfg(test)]
 mod tests {
@@ -72,6 +78,24 @@ mod tests {
     fn test_find_unique_char() {
         let input = String::from("hello");
         let result = find_unique_char(&input);
-        assert_eq!(result, "afsd");
+        assert_eq!(result, "ehlo");
+    }
+
+    #[test]
+    fn test_random_string_with_seed() {
+        let seed = 12345;
+        let length = 10;
+        let result1 = random_string_with_seed(length, seed);
+        let result2 = random_string_with_seed(length, seed);
+
+        // Same seed should produce same result
+        assert_eq!(result1, result2);
+
+        // Different seed should produce different result
+        let result3 = random_string_with_seed(length, seed + 1);
+        assert_ne!(result1, result3);
+
+        // Correct length
+        assert_eq!(result1.len(), length);
     }
 }
